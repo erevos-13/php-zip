@@ -1,0 +1,22 @@
+html{
+	height: 100%;
+	width: 100%;
+}
+
+.form{
+	height: 100vh;	
+    -webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;	
+	background-color: #D3D3D3;
+	text-align: center;	
+	font-size: 20px;
+
+}
+
+.form h1{
+	margin: 0;
+	padding: 60px 40px;
+}
+

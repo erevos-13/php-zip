@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 
 if(isset($_POST["submit"])) {
 
-    
+
 $target_dir = "upload/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = true;
@@ -54,14 +54,14 @@ $FileType = pathinfo($target_file,PATHINFO_EXTENSION);
 <head>
 <meta charset="utf-8">
 <title>Cloud</title>
-   <link rel="stylesheet" type="text/css" href="css/normalize.css">
-<link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
-
 <form class="form" action="upload.php" method="post" enctype="multipart/form-data">
-    Select image to upload:
-    <input type="file" name="fileToUpload" id="fileToUpload">
+    <h1>Up load a file in our Coud</h1>
+    <p>Select file to upload:</p>
+    <input type="file" name="fileToUpload" id="fileToUpload"><br><br>
     <input type="submit" value="Upload file" name="submit">
     
 </form>
