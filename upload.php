@@ -1,24 +1,50 @@
 <?php
+session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$target_dir = "upload/";
-$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-$uploadOk = 1;
-$FileType = pathinfo($target_file,PATHINFO_EXTENSION);
-// Check if image file is a actual image or fake image
 if(isset($_POST["submit"])) {
 
-    if (($_FILES["fileToUpload"]["tmp_name"])=== ($_FILES["fileToUpload"]["name"])) {
-        echo "readyup";
+    
+$target_dir = "upload/";
+$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+$uploadOk = true;
+$FileType = pathinfo($target_file,PATHINFO_EXTENSION);
+// Check if image file is a actual image or fake image
+
+
+    if (file_exists($target_file)) {
+        $uploadOk = false;
     }
-   
-    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) 
-    {
-        echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
-    } else {
-        echo "Sorry, there was an error to uploading your file.";
+
+    
+
+
+    if ($uploadOk == false) {
+        $_SESSION['file'] = basename( $_FILES["fileToUpload"]["name"]);
+        header('Location: fail.php');
+        exit;
     }
+    else 
+    {   
+
+        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+        $_SESSION['file']=  basename( $_FILES["fileToUpload"]["name"]);
+
+         
+        header('Location: upload_ok.php');
+        exit;       
+    }else{
+        echo "Sorry, file is not upload";
+    }
+
+    }        
+    
+
+
+
+    
+    
 }
 ?>
 
@@ -36,7 +62,7 @@ if(isset($_POST["submit"])) {
 <form class="form" action="upload.php" method="post" enctype="multipart/form-data">
     Select image to upload:
     <input type="file" name="fileToUpload" id="fileToUpload">
-    <input type="submit" value="Upload Image" name="submit">
+    <input type="submit" value="Upload file" name="submit">
     
 </form>
 
