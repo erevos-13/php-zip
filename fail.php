@@ -2,25 +2,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Fail</title>
-	<style>
-	a{
-		text-decoration: none;
-	}
-		.fail{
-			text-align: center;
-			font-size: 1.30em;
-			padding: 60px 40px;
-			background-color: #00FA9A;
-		}
-	</style>
+<meta charset="utf-8">
+<title>File</title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
 <div class="fail">
 <?php
 echo "<p>The file: <i><b>".$_SESSION['file']."</b></i> file to upload all ready there</p>";
 ?>
-<button><a href="upload.php">return</a></button>
+<a href="upload.php"><button class="button">return</button></a>
 </div>
 </body>
 </html>

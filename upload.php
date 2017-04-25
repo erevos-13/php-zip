@@ -3,11 +3,15 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+
+
+
 if(isset($_POST["submit"])) {
 
 
 $target_dir = "upload/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+$name = basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = true;
 $FileType = pathinfo($target_file,PATHINFO_EXTENSION);
 // Check if image file is a actual image or fake image
@@ -27,18 +31,23 @@ $FileType = pathinfo($target_file,PATHINFO_EXTENSION);
     }
     else 
     {   
+        $name = basename( $_FILES["fileToUpload"]["name"]);
+        $file = move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
+        include('zip.php');
 
-        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+        $zipClass = new zipClass;
+        $zipClass->zip($target_file);
+            
+            
+            
         $_SESSION['file']=  basename( $_FILES["fileToUpload"]["name"]);
 
          
         header('Location: upload_ok.php');
         exit;       
-    }else{
-        echo "Sorry, file is not upload";
     }
 
-    }        
+            
     
 
 
