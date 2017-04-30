@@ -23,7 +23,7 @@ $time = date("F j, Y, g:i a");
 
 ?>
 <div class="upload">
-<p><?php print "the file:".$_SESSION['file']."@".$time; ?></p>
+<p><?php print "the file:<br>".$_SESSION['file']."<br>@<br>".$time; ?></p>
 </div>
 
 </body>

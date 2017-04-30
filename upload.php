@@ -6,76 +6,66 @@ ini_set('display_errors', 1);
 
 
 
-if(isset($_POST["submit"])) {
-
-
-$target_dir = "upload/";
-$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-$name = basename($_FILES["fileToUpload"]["name"]);
-$uploadOk = true;
-$FileType = pathinfo($target_file,PATHINFO_EXTENSION);
-// Check if image file is a actual image or fake image
-
-
-    if (file_exists($target_file)) {
-        $uploadOk = false;
-    }
-
-    
-
-
-    if ($uploadOk == false) {
-        $_SESSION['file'] = basename( $_FILES["fileToUpload"]["name"]);
-        header('Location: fail.php');
-        exit;
-    }
-    else 
-    {   
-        $name = basename( $_FILES["fileToUpload"]["name"]);
-        $file = move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
-        include('zip.php');
-
-        $zipClass = new zipClass;
-        $zipClass->zip($target_file);
-            
-            
-            
-        $_SESSION['file']=  basename( $_FILES["fileToUpload"]["name"]);
-
-         
-        header('Location: upload_ok.php');
-        exit;       
-    }
-
-            
-    
-
-
-
+// Check if a file has been uploaded
+if(isset($_FILES['uploaded_file'])) {
+    // Make sure the file was sent without errors
+   
+        // Connect to the database
+        require('connect.php');
+ 
+        // Gather all required data
+        $name = $conn->real_escape_string($_FILES['uploaded_file']['name']);
+        $mime = $conn->real_escape_string($_FILES['uploaded_file']['type']);
+        $data = $conn->real_escape_string(file_get_contents($_FILES  ['uploaded_file']['tmp_name']));
+        $size = intval($_FILES['uploaded_file']['size']);
+ 
+        // Create the SQL query
+        $query = "
+            INSERT INTO file (
+                id, name, mime , size, data, created
+            )
+            VALUES (
+            NULL ,'$name', '$mime', $size, '$data', NOW()
+            )";
+ 
+        // Execute the query
+        $result = $conn->query($query);
+ 
+        // Check if it was successfull
+        if($result) {
+            echo 'Success! Your file was successfully added!';
+        }
+        else {
+            echo 'Error! Failed to insert the file'
+               . "<pre>{$conn->error}</pre>";
+        }
     
     
+ 
+    // Close the mysql connection
+    $conn->close();
+
 }
+ 
+
+
 ?>
-
-
+ 
 <!DOCTYPE html>
-<html>
 <head>
-<meta charset="utf-8">
-<title>Cloud</title>
+    <title>Cloud</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" type="text/css" href="css/normalize.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
-<form class="form" action="upload.php" method="post" enctype="multipart/form-data">
-    <h1>Up load a file in our Coud</h1>
-    <p>Select file to upload:</p>
-    <input type="file" name="fileToUpload" id="fileToUpload"><br><br>
-    <input type="submit" value="Upload file" name="submit">
+    <form class="form" action="upload.php" method="post" enctype="multipart/form-data">
+        <input type="file" name="uploaded_file"><br>
+        <input type="submit" value="Upload file">
+    </form>
     
-</form>
-
 </body>
 </html>
+
 
 
